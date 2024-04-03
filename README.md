@@ -66,5 +66,3 @@ Textual representation:
 ![Sample 8](sample_img/8.png)
 
 ![Sample 9](sample_img/9.png)
-
-To add the actual images in the README.md, you need to ensure that the image paths are correctly referenced relative to the location of the README.md file in your project directory. If the README.md is at the root of your project and the images are stored in `sample_img/` directly under the root, then the paths provided above are correct. Adjust the paths as necessary based on your project's directory structure.
