@@ -1,47 +1,70 @@
 # MNIST Image Generation with Transformers
 
-This project focuses on generating MNIST digit images using transformer models. The MNIST dataset, which consists of 28x28 pixel images of handwritten digits (0 through 9), serves as a standard benchmark for image generation tasks. By leveraging the capabilities of transformers, this project aims to synthesize high-fidelity digit images that closely mimic the authentic MNIST data.
-
 ## Methodology
 
-(To be completed)
+- MNIST images are transformed from 28x28 to 30x30
+- the brightness values are mapped to {0, 1} (via torch.round)
+- 6 bits form one symbol (2**6 = 64 symbols for pixels), starting from ASCII value 58 (:)
+- start token is the class we want to generate (what we condition on)
+- end token is )
 
-## Hyperparameters
+Textual representation:
 
-(To be completed)
 
-## Samples
+5::::::::::::::::::::::::::::=Z::IyZ:Ayy::AyZ::AwZ:::r::::j::::r::::R::::H::::AZ:::=j::::r::::v::::r:::Ar:::Yj::;y:::=v:::Yj::;yZ::;v::::::::::::::::::)
 
-Below are sample generated images for each digit from 0 to 9, showcasing the transformer model's capability to generate MNIST-like digit images. These images were generated after training the model with specified hyperparameters and methodology.
 
-### 0
+0:::::::::::::::::::::::j:::=r:::Ar:::Iv:::Yx:::yp::;w`::;rA::=jA::A:A::H:A::H:A::V:A::V:@::V:H::R:R::R;j::V=j::Yy:::Yv:::Ir:::=Z::::::::::::::::::::::)
+
+
+4:::::::::::::::::::::::::::::::::=::::=:;::<:=::@:=::@:=::H:=::H:=::F:=::v:=:Yv:=yvR:;x:R::::R::::r::::r::::r::::r::::r::::r::::R::::R::::::::::::::::)
+
+## Training
+
+| Transformer Hyperparameters | Value |
+|-----------------------------|-------|
+| d_model                     | 256   |
+| n_heads                     | 8     |
+| n_layers                    | 8     |
+| context_size                | 152   |
+| p_dropout                   | 0.1   |
+
+- trained on 10k MNIST images (their text representations)
+- learning rate = 1e-4
+- Adam optimizer
+- batch size = 128
+- epochs = 1 (training takes approx. 40 minutes on an RTX3060)
+
+## Results
+
+| Hyperparameters for Sampling  |          Details          |
+|-------------------------------|---------------------------|
+| Sequence Generation           | 64 sequences at the same time |
+| Transformer Temperature       | 0.8                        |
+| Classifier                    | CNN trained on MNIST      |
+| Classifier Logits Temperature | 0.8                        |
+| Output Selection              | Best 8 sequences shown    |
+
+- Inference time (64 generations): approx. 3s (on an RTX3060)
+
 ![Sample 0](sample_img/0.png)
 
-### 1
 ![Sample 1](sample_img/1.png)
 
-### 2
 ![Sample 2](sample_img/2.png)
 
-### 3
 ![Sample 3](sample_img/3.png)
 
-### 4
 ![Sample 4](sample_img/4.png)
 
-### 5
 ![Sample 5](sample_img/5.png)
 
-### 6
 ![Sample 6](sample_img/6.png)
 
-### 7
 ![Sample 7](sample_img/7.png)
 
-### 8
 ![Sample 8](sample_img/8.png)
 
-### 9
 ![Sample 9](sample_img/9.png)
 
 To add the actual images in the README.md, you need to ensure that the image paths are correctly referenced relative to the location of the README.md file in your project directory. If the README.md is at the root of your project and the images are stored in `sample_img/` directly under the root, then the paths provided above are correct. Adjust the paths as necessary based on your project's directory structure.
